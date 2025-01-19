@@ -17,6 +17,13 @@ const AdminContacts = () => {
   const { authorizationToken } = useAuth();
   const [contactData, seContactData] = useState([]);
 
+  const handleDeleteModal = (id) => {
+    setDeleteModal(prev => !prev);
+    if (id !== null) {
+      setDeleteId(id);
+    }
+  }
+
 
 
   const getAllContactData = async () => {
@@ -37,17 +44,12 @@ const AdminContacts = () => {
     }
   }
 
-  useEffect(() => {
-    getAllContactData();
-  }, [])
+  // useEffect(() => {
+  //   getAllContactData();
+  // }, [])
 
 
-  const handleDeleteModal = (id) => {
-    setDeleteModal(prev => !prev);
-    if (id !== null) {
-      setDeleteId(id);
-    }
-  }
+
 
   const handleContactDelete = async (id) => {
     try {
@@ -59,14 +61,12 @@ const AdminContacts = () => {
       })
       const data = await res.json();
       console.log(`User after ${data} deleted successfully.`);
-      if (res.ok) {
-        getAllContactData();
-        toast.success("Delete Successful");
-      } else {
-        toast.error("Delete Failed");
-      }
+      getAllContactData();
+      toast.success("Delete Successful");
+
     } catch (error) {
       console.error(error);
+      toast.error("Delete Failed");
     }
   }
 
@@ -83,42 +83,42 @@ const AdminContacts = () => {
           <h1>Admin Contact panel</h1>
         </div>
         <div className="container admin-users">
-            <table>
-              <thead>
-                <tr>
-                  <td>Name</td>
-                  <td>Email</td>
-                  <td>Message</td>
-                  <td>Action</td>
-                </tr>
-              </thead>
-              <tbody>
-                {contactData.length > 0 ? (
-                  contactData.map((user, index) => (
-                    <tr key={index}>
-                      <td>{user.username}</td>
-                      <td>{user.email}</td>
-                      <td>{user.message}</td>
-                      <td>
-                        <span>
-                          {/* <EditIcon /> */}
-                        </span>
-                        <span onClick={() => handleDeleteModal(user._id)}>
-                          <DeleteIcon />
-                        </span>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="4" style={{ textAlign: "center" }}>
-                      No Contacts found.
+          <table>
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Message</td>
+                <td>Action</td>
+              </tr>
+            </thead>
+            <tbody>
+              {contactData.length > 0 ? (
+                contactData.map((user, index) => (
+                  <tr key={index}>
+                    <td>{user.username}</td>
+                    <td>{user.email}</td>
+                    <td>{user.message}</td>
+                    <td>
+                      <span>
+                        {/* <EditIcon /> */}
+                      </span>
+                      <span onClick={() => handleDeleteModal(user._id)}>
+                        <DeleteIcon />
+                      </span>
                     </td>
                   </tr>
-                )}
-              </tbody>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
+                    No Contacts found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
 
-            </table>
+          </table>
         </div>
 
       </section>
