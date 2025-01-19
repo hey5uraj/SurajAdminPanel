@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import "./Navbar.css"
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { useAuth } from '../store/auth';
@@ -54,6 +54,16 @@ const Navbar = () => {
                                         <li><NavLink to="/login" className={({ isActive }) => isActive ? 'active' : ''}>Login</NavLink></li>
                                     </>
                                 )
+                            }
+                            {
+                                user.isAdmin === true ?
+                                    (
+                                        <Link to="admin/users">
+                                            <button>Go To Admin</button>
+                                        </Link>
+                                    ) : (
+                                        <></>
+                                    )
                             }
                         </ul>
                     </nav>
